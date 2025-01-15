@@ -4,6 +4,6 @@ router.get('/', (req, res) => {
 });
 
 const usersRouter = require('./users'); // Import users router
-router.use('/users', usersRouter); // Use users router
+router.use('/user', usersRouter); // Use users router
 
 module.exports = router;
