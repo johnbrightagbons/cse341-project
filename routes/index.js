@@ -3,7 +3,9 @@ router.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-const usersRouter = require('./users'); // Import users router
-router.use('/user', usersRouter); // Use users router
+const contactsRouter = require('./contacts'); // Import contacts router
+router.use('/contacts', contactsRouter); // Use contacts router
+
+
 
 module.exports = router;
