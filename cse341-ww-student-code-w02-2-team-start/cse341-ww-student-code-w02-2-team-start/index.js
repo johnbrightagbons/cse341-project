@@ -1,12 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+const routes = require('./routes')
 
-app
-  .use(cors())
-  .use(express.json())
-  .use(express.urlencoded({ extended: true }))
-  .use('/', require('./routes'));
+app.use(express.json());
+app.use('./,routes');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+app.use(cors())
 
 const db = require('./models');
 db.mongoose
