@@ -24,7 +24,53 @@ const getContactById = async (req, res) => {
     }
 };
 
+const createUser = async (req, res) => {
+    const user = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        favouriteColour: req.body.favouriteColour,
+        birthday: req.body.birthday
+    };
+    const response = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').insertOne(user);
+    if (response.acknowledged) {
+        res.status(201).json(response);
+    } else {
+        res.status(500).json(response.error || 'User not created');
+    }
+};
+
+const updateUser = async (req, res) => {
+    const userId = new ObjectId(req.params.id);
+    const user = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        favouriteColour: req.body.favouriteColour,
+        birthday: req.body.birthday
+    };
+    const response = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').replaceOne({ _id: userId }, user);
+    if (response.modifiedCount > 0) {
+        res.status(204).send();
+    } else {
+        res.status(500).json(response.error || 'User not updated');
+    }
+};
+
+const deleteUser = async (req, res) => {
+    const userId = new ObjectId(req.params.id);
+    const response = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').deleteOne({ _id: userId });
+    if (response.deletedCount > 0) {
+        res.status(204).send();
+    } else {
+        res.status(500).json(response.error || 'User not deleted');
+    }
+};
+
 module.exports = {
     getAllContacts,
-    getContactById
+    getContactById,
+    createUser,
+    updateUser,
+    deleteUser
 };

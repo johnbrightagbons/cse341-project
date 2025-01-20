@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
     const userId = new ObjectId(req.params.id);
     try {
-        const result = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').findOne({ _id: userId });
+        const result = await mongodb.getDatabase().db(process.env.DB_NAME).collection('user').findOne({ _id: userId });
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(result);
     } catch (err) {
@@ -24,7 +24,3 @@ const getSingle = async (req, res) => {
     }
 };
 
-module.exports = {
-    getAll,
-    getSingle
-};
