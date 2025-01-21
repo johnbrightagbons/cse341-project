@@ -15,13 +15,11 @@ const getAllContacts = async (req, res) => {
 
 const getContactById = async (req, res) => {
     const contactId = new ObjectId(req.params.id);
-    try {
-        const result = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').findOne({ _id: contactId });
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(result);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+    const result = await mongodb.getDatabase().db().collection('contacts').find({ _id: contactId });
+    result.toArray().then((contacts) => {
+        res.setHeader("Content-Type", "application/json");
+        res.status(200).json(contacts[0]);
+    });
 };
 
 const createUser = async (req, res) => {
@@ -42,6 +40,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const userId = new ObjectId(req.params.id);
+    console.log(`Updating user with ID: ${userId}`, req.body); // Log incoming request data
     const user = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -53,16 +52,19 @@ const updateUser = async (req, res) => {
     if (response.modifiedCount > 0) {
         res.status(204).send();
     } else {
+        console.error(`Failed to update user with ID: ${userId}`, response.error); // Log error
         res.status(500).json(response.error || 'User not updated');
     }
 };
 
 const deleteUser = async (req, res) => {
     const userId = new ObjectId(req.params.id);
+    console.log(`Deleting user with ID: ${userId}`); // Log incoming request data
     const response = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').deleteOne({ _id: userId });
     if (response.deletedCount > 0) {
         res.status(204).send();
     } else {
+        console.error(`Failed to delete user with ID: ${userId}`, response.error); // Log error
         res.status(500).json(response.error || 'User not deleted');
     }
 };

@@ -1,11 +1,10 @@
-const router = require('express').Router();
-router.get('/', (req, res) => {
-    res.send('Hello World');
-});
+const express = require('express');
+const router = express.Router();
+const contactsRoutes = require('./contacts');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger-output.json');
 
-const contactsRouter = require('./contacts'); // Import contacts router
-router.use('/contacts', contactsRouter); // Use contacts router
-
-
+router.use('/contacts', contactsRoutes);
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = router;
