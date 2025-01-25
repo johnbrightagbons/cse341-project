@@ -15,14 +15,14 @@ const getAllContacts = async (req, res) => {
 
 const getContactById = async (req, res) => {
     const contactId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db().collection('contacts').find({ _id: contactId });
+    const result = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').find({ _id: contactId });
     result.toArray().then((contacts) => {
         res.setHeader("Content-Type", "application/json");
         res.status(200).json(contacts[0]);
     });
 };
 
-const createUser = async (req, res) => {
+const createContact = async (req, res) => {
     const user = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
     }
 };
 
-const updateUser = async (req, res) => {
+const updateContact = async (req, res) => {
     const userId = new ObjectId(req.params.id);
     console.log(`Updating user with ID: ${userId}`, req.body); // Log incoming request data
     const user = {
@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteContact = async (req, res) => {
     const userId = new ObjectId(req.params.id);
     console.log(`Deleting user with ID: ${userId}`); // Log incoming request data
     const response = await mongodb.getDatabase().db(process.env.DB_NAME).collection('contacts').deleteOne({ _id: userId });
@@ -72,7 +72,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getAllContacts,
     getContactById,
-    createUser,
-    updateUser,
-    deleteUser
+    createContact,
+    updateContact,
+    deleteContact
 };
