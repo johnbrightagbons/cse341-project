@@ -5,7 +5,7 @@ const saveContact = (req, res, next) => {
         firstName: 'required|string',
         lastName: 'required|string',
         email: 'required|email',
-        favoriteColor: 'required|string',
+        favoriteColor: 'string',
         birthday: 'string'
     };
     validator(req.body, validationRule, {}, (err, status) => {

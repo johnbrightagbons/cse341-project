@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb'); // Import ObjectId
-const contactsController = require('../controllers/contacts');
-const validation = require('../middleware/validate');
+const contactsController = require('../controllers/contacts'); // Ensure this path is correct
+const validation = require('../middleware/validate'); // Ensure this path is correct
 
 router.get('/', contactsController.getAll);
 

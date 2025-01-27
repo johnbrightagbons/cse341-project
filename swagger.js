@@ -1,5 +1,4 @@
-const swaggerUi = require('swagger-ui-express');
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require('swagger-autogen')(outputFile, endpointsFiles, doc);
 const doc = {
     info: {
         title: 'Temple API',
