@@ -2,7 +2,6 @@ const router = require('express').Router();
 const usersController = require('../controllers/users');
 const { isAuthenticated } = require('../middleware/authenticate');
 
-
 router.get('/', usersController.getAll);
 router.get('/:id', usersController.getSingle);
 router.post('/', isAuthenticated, usersController.createUser); // Add isAuthenticated middleware

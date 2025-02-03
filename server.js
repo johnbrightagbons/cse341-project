@@ -36,8 +36,7 @@ app.use((req, res, next) => {
 
 app.use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
 app.use(cors({ origin: '*' }))
-app.use("/", require("./routes/index.js"));
-
+app.use("/", require("./routes/index.js")); // Ensure this line is correct
 
 passport.use(new GithubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
@@ -65,6 +64,9 @@ app.get('/github/callback', passport.authenticate('github', {
     res.redirect('/');
 });
 
+// Import and use the students route
+const studentsRoute = require('./routes/students');
+app.use('/students', studentsRoute);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 mongodb.initDb((err) => {
