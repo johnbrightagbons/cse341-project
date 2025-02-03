@@ -1,16 +1,26 @@
 const router = require('express').Router();
-const usersController = require('../controllers/users');
-const { isAuthenticated } = require('../middleware/authenticate');
 
-router.get('/', usersController.getAll);
-router.get('/:id', usersController.getSingle);
-router.post('/', isAuthenticated, usersController.createUser); // Add isAuthenticated middleware
-router.put('/:id', isAuthenticated, usersController.updateUser); // Add isAuthenticated middleware
-router.delete('/:id', isAuthenticated, usersController.deleteUser); // Add isAuthenticated middleware
+router.get('/', (req, res) => {
+    res.json([
+        { id: 1, name: 'Student One' },
+        { id: 2, name: 'Student Two' }
+    ]);
+});
 
-// Remove duplicate routes
-// router.post("/", isAuthenticated, usersController.postUser);
-// route.put('/:id', isAuthenticated, usersController.putUser);
-// route.delete('/:id', isAuthenticated, usersController.deleteUser);
+router.get('/:id', (req, res) => {
+    res.json({ id: req.params.id, name: `Student ${req.params.id}` });
+});
+
+router.post('/', (req, res) => {
+    res.status(201).json({ message: 'Student created' });
+});
+
+router.put('/:id', (req, res) => {
+    res.json({ message: `Student ${req.params.id} updated` });
+});
+
+router.delete('/:id', (req, res) => {
+    res.json({ message: `Student ${req.params.id} deleted` });
+});
 
 module.exports = router;

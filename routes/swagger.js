@@ -1,4 +1,7 @@
+const route = require('express').Router();
 const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
+
 const swaggerAutogen = require('swagger-autogen')();
 const doc = {
     info: {
@@ -11,8 +14,14 @@ const doc = {
 
 const outputFile = './swagger-output.json';
 const endpointsFiles = ['./routes/index.js']; // Ensure this file contains your route definitions
+route.use('/api-docs', swaggerUi.serve);
+route.get('/api-docs', swaggerUi.setup(swaggerDocument));
+
+
 
 // Generate Swagger documentation
 swaggerAutogen(outputFile, endpointsFiles).then(() => {
     console.log('Swagger documentation generated');
 });
+
+module.exports = route;

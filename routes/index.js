@@ -1,15 +1,15 @@
 const express = require('express'); // Import express
-const router = express.Router(); // Create router
-const mongodb = require('../data/database'); // Import mongodb
-const contactsRoutes = require('./contacts'); // Import contacts routes
-const studentsRoutes = require('./students'); // Import students
+const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger-output.json'); // Import swagger file
-const passport = require('passport'); // Add this line
+const swaggerDocument = require('../swagger');
+const contactsRoutes = require('./contacts'); // Import contacts routes
+const studentsRoutes = require('./students'); // Import students routes
+
+const router = express.Router(); // Create router
 
 router.use('/contacts', contactsRoutes); // Use contacts routes
 router.use('/students', studentsRoutes); // Use students routes
-router.use('/api-docs', swaggerUi.serve) // Use swagger-ui-express
+router.use('/api-docs', swaggerUi.serve); // Use swagger-ui-express
 router.get('/api-docs', swaggerUi.setup(swaggerDocument)); // Set up swagger-ui-express
 
 router.get('/login', passport.authenticate('github'), (req, res) => { });

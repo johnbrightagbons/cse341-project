@@ -4,10 +4,8 @@ const mongodb = require('./data/database'); // Corrected path to mongodb
 const app = express(); // Initialize express
 const passport = require('passport');
 const session = require('express-session');
-const GithubStrategy = require('passport-github2');
-const cors = require('cors')
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const GithubStrategy = require('passport-github2').Strategy;
+const cors = require('cors');
 
 const port = process.env.PORT || 3000; // Port number
 app.use(bodyParser.json());
@@ -20,19 +18,20 @@ app.use(session({
 
 
 //Express Session Initialization
-app.use(passport.initialize())
-// Init passport on every route call,
-app.use(passport.session())
-// Allow passport to use express session
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, z-key, Authorization"
-    );
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
-});
+app
+    .use(passport.initialize())
+    // Init passport on every route call,
+    .use(passport.session())
+    // Allow passport to use express session
+    .use((req, res, next) => {
+        res.setHeader("Access-Control-Allow-Origin", "*")
+        res.setHeader(
+            "Access-Control-Allow-Headers",
+            "Origin, X-Requested-With, Content-Type, Accept, z-key, Authorization"
+        )
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        next()
+    });
 
 app.use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'] }))
 app.use(cors({ origin: '*' }))
@@ -64,11 +63,6 @@ app.get('/github/callback', passport.authenticate('github', {
     res.redirect('/');
 });
 
-// Import and use the students route
-const studentsRoute = require('./routes/students');
-app.use('/students', studentsRoute);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 mongodb.initDb((err) => {
     if (err) {
         console.log(err);
