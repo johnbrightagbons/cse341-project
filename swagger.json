@@ -1,0 +1,29 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/contacts": {
+            "get": {
+                "summary": "Get all contacts",
+                "responses": {
+                    "200": {
+                        "description": "A list of contacts."
+                    }
+                }
+            }
+        },
+        "/students": {
+            "get": {
+                "summary": "Get all students",
+                "responses": {
+                    "200": {
+                        "description": "A list of students."
+                    }
+                }
+            }
+        }
+    }
+}
