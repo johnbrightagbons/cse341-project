@@ -1,6 +1,6 @@
 const route = require('express').Router();
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json');
+const swaggerDocument = require('../swagger-output.json');
 
 const swaggerAutogen = require('swagger-autogen')();
 const doc = {
@@ -12,7 +12,7 @@ const doc = {
     schemes: ['https', 'http'],
 };
 
-const outputFile = './swagger-output.json';
+// const outputFile = require('../swagger-output.json');
 const endpointsFiles = ['./routes/index.js']; // Ensure this file contains your route definitions
 route.use('/api-docs', swaggerUi.serve);
 route.get('/api-docs', swaggerUi.setup(swaggerDocument));

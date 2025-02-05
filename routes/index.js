@@ -1,7 +1,7 @@
 const express = require('express'); // Import express
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger');
+const swaggerDocument = require('../swagger-output.json');
 const contactsRoutes = require('./contacts'); // Import contacts routes
 const studentsRoutes = require('./students'); // Import students routes
 
