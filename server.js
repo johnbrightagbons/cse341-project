@@ -4,7 +4,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
-const GithubStrategy = require('passport-github2').Strategy;
 const cors = require('cors');
 const { connectDB } = require('./data/database'); // Ensure database is imported
 
