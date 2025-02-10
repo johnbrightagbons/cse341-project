@@ -1,34 +1,32 @@
-const dotenv = require('dotenv');  // Import dotenv
-dotenv.config();   // Initialize dotenv
+const { MongoClient } = require('mongodb');
 
-const { MongoClient } = require('mongodb');   // Import MongoClient
+const uri = process.env.MONGODB_URI
+const dbName = 'schoolAPI';
+let db;
 
-let _db;   // Initialize database
-
-const initDb = (callback) => {  // Initialize database
-    if (_db) {   // Check if database is already initialized
-        console.log("Database is already initialized!");  // Log message
-        return callback(null, _db); // Return callback
+const connectDB = async () => {
+    if (!db) {
+        try {
+            const client = new MongoClient(uri, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+            await client.connect();
+            db = client.db(dbName);
+            console.log('✅ Connected to MongoDB');
+        } catch (error) {
+            console.error('❌ Failed to connect to MongoDB', error);
+            throw error;
+        }
     }
-    console.log('Connecting to MongoDB with URI:', process.env.MONGODB_URI); // Log the connection string
-    MongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // Connect to MongoDB
-        .then((client) => { // If successful
-            _db = client.db(); // Set database to client.db() with the database name
-            callback(null, _db);  // Return callback
-        })
-        .catch((err) => {  // If error
-            callback(err); // Return callback
-        });
+    return db;
 };
 
-const getDb = () => { // Get database
-    if (!_db) { // If database is not initialized
-        throw Error('Database not initialized') // Throw error
+const getDb = () => {
+    if (!db) {
+        throw new Error('❌ Database not initialized. Call connectDB first.');
     }
-    return _db;  // Return database
+    return db;
 };
 
-module.exports = {  // Export module
-    initDb,  // Initialize database
-    getDb,  // Get database
-};
+module.exports = { connectDB, getDb };

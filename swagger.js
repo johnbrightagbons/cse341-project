@@ -9,7 +9,7 @@ const doc = {
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = ['./routes/index.js']; // Ensure this file contains your route definitions
+const endpointsFiles = ['./routes/index.js']; //  this file contains your route definitions
 
 // Generate Swagger documentation
 swaggerAutogen(outputFile, endpointsFiles).then(() => {
