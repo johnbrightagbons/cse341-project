@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/schoolAPI';
 const dbName = 'schoolAPI';
 let db;
 
@@ -15,7 +16,7 @@ const connectDB = async () => {
             db = client.db(dbName);
             console.log('✅ Connected to MongoDB');
         } catch (error) {
-            console.error('❌ Failed to connect to MongoDB', error);
+            console.error('❌ Failed to connect to MongoDB:', error);
             throw error;
         }
     }
