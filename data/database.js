@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/schoolAPI';
+const uri = process.env.MONGODB_URI;
 const dbName = 'schoolAPI';
 let db;
 
