@@ -1,7 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/schoolAPI';
-
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const dbName = 'schoolAPI';
 let db;
 

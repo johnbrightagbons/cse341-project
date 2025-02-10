@@ -1,6 +1,7 @@
+require('dotenv').config();
+console.log("MongoDB URI:", process.env.MONGODB_URI); // Debugging
 const express = require('express');
 const app = express();
-require('dotenv').config();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
