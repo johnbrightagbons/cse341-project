@@ -1,9 +1,10 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const GithubStrategy = require('passport-github2').Strategy;
 const cors = require('cors');
 const { connectDB } = require('./data/database'); // Ensure database is imported
 
@@ -31,6 +32,22 @@ app.get('/github/callback', passport.authenticate('github', {
     res.redirect('/');  // Redirect to root route
 });
 
+// Passport GitHub strategy setup
+passport.use(new GithubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL || 'http://localhost:3000/github/callback'  // Default fallback URL
+}, (accessToken, refreshToken, profile, done) => {
+    return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user);  // Store the user profile in the session
+});
+
+passport.deserializeUser((user, done) => {
+    done(null, user);  // Retrieve user profile from session
+});
 
 // MongoDB connection setup (ensure it's connected before starting the server)
 connectDB().then(() => {
