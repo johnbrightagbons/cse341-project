@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const passport = require('passport');
+const passport = require('./passport/passport.js');
 
 const cors = require('cors');
 const { connectDB } = require('./data/database'); // Ensure database is imported
@@ -29,7 +29,8 @@ app.get('/github/callback', passport.authenticate('github', {
     failureRedirect: '/api-docs', session: false
 }), (req, res) => {
     // On successful login, store the user profile in the session
-    req.session.user = req.user;
+    req.session.user = req.user.profile;
+    console.log(req.user);
     res.redirect('/');  // Redirect to root route
 });
 
