@@ -21,7 +21,7 @@ app.use(session({
 
 // Root route to show if user is logged in or logged out
 app.get('/', (req, res) => {
-    res.send(req.session.user.profile ? `Logged in as ${req.session.user.username}` : "Logged Out");
+    res.send(req.session.user ? `Logged in as ${req.session.user.username}` : "Logged Out");
 });
 
 // GitHub OAuth callback route
