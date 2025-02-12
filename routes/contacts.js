@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb'); // Import ObjectId
 const contactsController = require('../controllers/contacts');
 const validation = require('../middleware/validate');
 
-// Get all contacts
-router.get('/', contactsController.getAll);
+// GET all contacts
+router.get('/', async (req, res) => {
+    try {
+        await contactsController.getAll(req, res);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error', details: error.message });
+    }
+});
 
-// Get single contact (with error handling)
-router.get('/:id', async (req, res, next) => {
+// GET single contact by ID
+router.get('/:id', async (req, res) => {
     try {
         const contactId = req.params.id;
         if (!ObjectId.isValid(contactId)) {
@@ -16,21 +22,21 @@ router.get('/:id', async (req, res, next) => {
         }
         await contactsController.getSingle(req, res);
     } catch (error) {
-        next(error);
+        res.status(500).json({ error: 'Server error', details: error.message });
     }
 });
 
-// Create contact (with validation)
-router.post('/', validation.saveContact, (req, res) => {
-    console.log("🔍 Request Body Received:", req.body); // Debugging line
-    if (!req.body || Object.keys(req.body).length === 0) {
-        return res.status(400).json({ message: "❌ Request body is empty!" });
+// POST create a new contact
+router.post('/', validation.saveContact, async (req, res) => {
+    try {
+        await contactsController.createContact(req, res);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error', details: error.message });
     }
-    contactsController.createContact(req, res);
 });
 
-// Update contact (with validation and error handling)
-router.put('/:id', validation.saveContact, async (req, res, next) => {
+// PUT update an existing contact
+router.put('/:id', validation.saveContact, async (req, res) => {
     try {
         const contactId = req.params.id;
         if (!ObjectId.isValid(contactId)) {
@@ -38,12 +44,12 @@ router.put('/:id', validation.saveContact, async (req, res, next) => {
         }
         await contactsController.updateContact(req, res);
     } catch (error) {
-        next(error);
+        res.status(500).json({ error: 'Server error', details: error.message });
     }
 });
 
-// Delete contact (with error handling)
-router.delete('/:id', async (req, res, next) => {
+// DELETE a contact by ID
+router.delete('/:id', async (req, res) => {
     try {
         const contactId = req.params.id;
         if (!ObjectId.isValid(contactId)) {
@@ -51,7 +57,7 @@ router.delete('/:id', async (req, res, next) => {
         }
         await contactsController.deleteContact(req, res);
     } catch (error) {
-        next(error);
+        res.status(500).json({ error: 'Server error', details: error.message });
     }
 });
 
