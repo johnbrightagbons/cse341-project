@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const uri = process.env.MONGODB_URI;
-const dbName = 'schoolAPI';
+const dbName = 'project';
 let db;
 
 const connectDB = async () => {
