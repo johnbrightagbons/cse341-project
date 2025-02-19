@@ -22,7 +22,7 @@ app.use(session({
 
 // CORS setup
 const corsOptions = {
-    origin: ["https://cse341-project-2xdy.onrender.com"],
+    origin: 'https://cse341-project-2xdy.onrender.com',
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 };
