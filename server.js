@@ -22,24 +22,15 @@ app.use(session({
 
 // CORS setup
 // Use the cors middleware instead
-app.use(cors({
-    origin: 'https://cse341-project-2xdy.onrender.com',
-    credentials: true,
-}));
-// Session configuration using MongoDB as the store
-app.use(session({
-    secret: process.env.GITHUB_CLIENT_SECRET || 'secret',
-    resave: false,
-    saveUninitialized: false,
-    proxy: true, // Important for deployments behind a proxy (like Render)
-    cookie: {
-        secure: process.env.NODE_ENV === 'production', // Secure cookies only in production
-        httpOnly: true, // Prevents client-side JavaScript access to cookies
-        sameSite: 'lax' // Adjust if needed for cross-origin issues
-    }
-})),
-    // Passport setup
-    app.use(passport.initialize());
+const corsOptions = {
+    origin: 'https://cse341-project-2xdy.onrender.com', // Replace with your frontend's URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+app.use(cors(corsOptions));
+
+// Passport setup
+app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes setup
