@@ -25,7 +25,7 @@ app.use(session({
 app.use(cors({
     origin: 'https://cse341-project-2xdy.onrender.com',
     credentials: true,
-}))
+}));
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
