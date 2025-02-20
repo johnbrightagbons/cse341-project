@@ -11,23 +11,44 @@ require("./passport/passport");
 
 const port = process.env.PORT || 3000;
 
-app
-    .use(bodyParser.json())
-    .use(
-        session({
-            secret: "secret", // Use a strong secret
-            resave: false,
-            saveUninitialized: false, // Ensure session is stored only for logged-in users
-            cookie: { secure: false, httpOnly: true } // Secure: true for HTTPS
-        })
-    )
-    .use(passport.initialize())
-    .use(passport.session())
-    .use(cors({
-        origin: "https://cse341-project-2xdy.onrender.com", //  frontend URL
-        credentials: true // Ensure cookies are sent
-    }))
-    .use("/", require("./routes/index.js"));
+// Middleware setup
+app.use(bodyParser.json());
+
+// Express-session setup
+app.use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+}));
+
+// CORS setup
+const corsOptions = {
+    origin: 'https://cse341-project-2xdy.onrender.com',
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+};
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Z-Key"
+    );
+
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    next();
+});
+app.use(cors(corsOptions));
+
+// Passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes setup
+const routes = require("./routes/index.js");
+app.use("/", routes);
 
 app.get("/", (req, res) => {
     res.send(
