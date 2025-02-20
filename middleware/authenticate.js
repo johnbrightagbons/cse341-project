@@ -1,9 +1,12 @@
 const isAuthenticated = (req, res, next) => {
-
     if (req.session.user === undefined) {
-        return res.status(401).json("You do not have access.");
+        console.log('Unauthorized access attempt:', req.originalUrl); // Log the attempt
+        return res.status(401).json({
+            error: "You do not have access.",
+            status: 401
+        });
     }
-    next();
+    next(); // User is authenticated; proceed to the next middleware/route handler
 };
 
 module.exports = { isAuthenticated };

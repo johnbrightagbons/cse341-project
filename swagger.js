@@ -1,29 +1,45 @@
-const express = require('express');
-const route = express.Router();
-const swaggerUi = require('swagger-ui-express');
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require("swagger-autogen")();
 
-// Swagger documentation settings
 const doc = {
     info: {
-        title: 'My API',
-        description: 'API documentation',
+        title: "Contacts API",
+        description: "API for managing contacts",
+        version: "1.0.0"
     },
-    host: 'localhost:3000',
-    schemes: ['http'],
-
+    host: "localhost:3000",
+    schemes: ["http", "https"],
+    tags: [
+        {
+            name: "Contacts",
+            description: "Operations with contacts"
+        }
+    ],
+    components: {
+        schemas: {
+            Contact: {
+                type: "object",
+                properties: {
+                    user_id: { type: "string" },
+                    firstName: { type: "string" },
+                    lastName: { type: "string" },
+                    email: { type: "string" },
+                    favouriteColour: { type: "string" },
+                    birthday: { type: "string", format: "date" },
+                    school: { type: "string" },
+                    status: { type: "string" },
+                    logins_count: { type: "number" },
+                    created_at: { type: "string", format: "date-time" },
+                    updated_at: { type: "string", format: "date-time" },
+                    last_login: { type: "string", format: "date-time" },
+                    email_verified: { type: "boolean" }
+                }
+            }
+        }
+    }
 };
 
-const outputFile = './swagger-output.json';
-const endpointsFiles = ['./routes/contacts']; // Add all routes that should be documented
 
-// Generate Swagger documentation
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-    console.log('✅ Swagger documentation generated');
-});
+const outputFile = "./swagger.json";
+const endpointsFiles = ["./routes/index.js"];
 
-// Serve Swagger UI
-const swaggerDocument = require(outputFile);
-route.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-module.exports = route;
+swaggerAutogen(outputFile, endpointsFiles, doc);
